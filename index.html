@@ -85,19 +85,27 @@
         .product-card { background: rgba(255, 255, 255, 0.9); border-radius: 10px; padding: 10px; text-align: center; border: 1px solid #ddd; }
         .product-img { width: 100%; aspect-ratio: 1/1; background: #f9f9f9; border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: pointer; position: relative; }
         .product-img img { width: 100%; height: 100%; object-fit: contain; }
-        .play-icon { position: absolute; color: white; font-size: 2rem; opacity: 0.8; }
+        .play-icon { position: absolute; color: white; font-size: 2.5rem; opacity: 0.9; text-shadow: 0 0 15px rgba(0,0,0,0.5); }
         .btn-buy { background: var(--primary-lila); color: white; border: none; padding: 12px 5px; border-radius: 6px; width: 100%; font-weight: bold; cursor: pointer; }
 
-        /* Media Viewer (App Style) */
+        /* Media Viewer */
         #media-viewer {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 9999; flex-direction: column; justify-content: center; align-items: center;
         }
-        .viewer-container { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; position: relative; touch-action: none; }
+        .viewer-container { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; position: relative; }
+        
+        /* Capa invisible para permitir el swipe sobre videos */
+        #swipe-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 10001; background: transparent; touch-action: none;
+        }
+
         #full-image { max-width: 100%; max-height: 85%; object-fit: contain; display: none; }
-        #video-iframe { width: 100%; height: 75vh; border: none; display: none; }
+        #video-iframe { width: 100%; height: 75vh; border: none; display: none; z-index: 10000; }
+        
         .close-viewer { position: fixed; top: 25px; right: 20px; color: white; font-size: 30px; background: rgba(142, 68, 173, 0.8); width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 50%; z-index: 10005; cursor: pointer; }
-        .viewer-footer { position: absolute; bottom: 30px; width: 100%; text-align: center; color: white; }
+        .viewer-footer { position: absolute; bottom: 30px; width: 100%; text-align: center; color: white; z-index: 10002; }
         .dots-container { display: flex; justify-content: center; gap: 8px; margin-top: 15px; }
         .dot { width: 8px; height: 8px; background: rgba(255,255,255,0.3); border-radius: 50%; transition: 0.3s; }
         .dot.active { background: var(--primary-lila); width: 20px; border-radius: 10px; }
@@ -150,7 +158,8 @@
 
 <div id="media-viewer">
     <div class="close-viewer" onclick="history.back()">&times;</div>
-    <div class="viewer-container" id="viewer-touch-area">
+    <div class="viewer-container">
+        <div id="swipe-overlay"></div>
         <img id="full-image" src="">
         <iframe id="video-iframe" allow="autoplay; encrypted-media" allowfullscreen></iframe>
     </div>
@@ -188,12 +197,7 @@ function renderView() {
         document.getElementById('home').classList.add('active');
     } else if (state.view === 'submenu') {
         document.getElementById('submenu-view').classList.add('active');
-    } else if (state.view === 'category') {
-        renderCategory(state.catId, state.catName);
-        document.getElementById('category-view').classList.add('active');
-    } else if (state.view === 'viewer') {
-        // Si el estado es visor, significa que le dieron "atrás" a la foto, 
-        // así que mostramos la categoría que estaba antes.
+    } else if (state.view === 'category' || state.view === 'viewer') {
         renderCategory(state.catId, state.catName);
         document.getElementById('category-view').classList.add('active');
     }
@@ -233,7 +237,6 @@ function renderCategory(id, name) {
 }
 
 function openViewer(index) {
-    // Al abrir el visor, creamos un nuevo estado
     history.pushState({ view: 'viewer', catId: history.state.catId, catName: history.state.catName }, "");
     currentIndex = index;
     updateViewer();
@@ -258,16 +261,28 @@ function updateViewer() {
     dots.innerHTML = currentList.map((_,f)=>`<div class="dot ${f===currentIndex?'active':''}"></div>`).join('');
 }
 
-// Swipe con el dedo
+// Lógica de Swipe REFORZADA (funciona sobre videos)
 let tStart = 0;
-document.getElementById('viewer-touch-area').addEventListener('touchstart', e => tStart = e.changedTouches[0].screenX);
-document.getElementById('viewer-touch-area').addEventListener('touchend', e => {
-    let tEnd = e.changedTouches[0].screenX;
-    if (tStart - tEnd > 50) { currentIndex = (currentIndex + 1) % currentList.length; updateViewer(); }
-    if (tEnd - tStart > 50) { currentIndex = (currentIndex - 1 + currentList.length) % currentList.length; updateViewer(); }
-});
+const swipeOverlay = document.getElementById('swipe-overlay');
 
-// ESCUCHADOR DEL BOTÓN ATRÁS DEL CELULAR
+swipeOverlay.addEventListener('touchstart', e => {
+    tStart = e.changedTouches[0].screenX;
+}, {passive: true});
+
+swipeOverlay.addEventListener('touchend', e => {
+    let tEnd = e.changedTouches[0].screenX;
+    let diff = tStart - tEnd;
+    if (Math.abs(diff) > 50) {
+        if (diff > 0) { // Siguiente
+            currentIndex = (currentIndex + 1) % currentList.length;
+        } else { // Anterior
+            currentIndex = (currentIndex - 1 + currentList.length) % currentList.length;
+        }
+        updateViewer();
+    }
+}, {passive: true});
+
+// Manejo del botón atrás físico
 window.addEventListener('popstate', renderView);
 
 function enviarWhatsApp(msg){
