@@ -32,7 +32,7 @@
             background-size: cover; background-position: center; opacity: 0.25; z-index: -1;
         }
 
-        .main-content { width: 100%; max-width: 450px; min-height: 100vh; padding: 10px 0; }
+        .main-content { width: 100%; max-width: 450px; min-height: 100vh; padding: 10px 0; position: relative; }
         header { text-align: center; padding: 30px 20px 20px; }
         
         .logo-placeholder {
@@ -85,13 +85,7 @@
             background: #000; z-index: 9999; flex-direction: column;
         }
         .viewer-body { flex: 1; width: 100%; position: relative; display: flex; align-items: center; justify-content: center; }
-        
-        /* Capa para detectar el swipe sin bloquear el play del video */
-        #touch-overlay { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-            z-index: 10002; background: transparent; touch-action: none;
-        }
-
+        #touch-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10002; background: transparent; touch-action: none; }
         #video-iframe { width: 100%; height: 75vh; border: none; z-index: 10000; display: none; }
         #full-image { max-width: 100%; max-height: 85%; object-fit: contain; display: none; }
         .close-viewer { position: absolute; top: 25px; right: 20px; color: white; font-size: 30px; z-index: 10005; background: rgba(142, 68, 173, 0.8); width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
@@ -121,7 +115,6 @@
             </div>
             <p class="subtitle">Catálogo de Servicios</p>
         </header>
-
         <div class="category-btn" onclick="goNav('submenu')"><span>CORTINAS DE LUJO</span><i class="fas fa-chevron-right"></i></div>
         <div class="category-btn" onclick="goNav('category', 'Muebles', 'Muebles de Lujo')"><span>MUEBLES DE LUJO</span><i class="fas fa-chevron-right"></i></div>
         <div class="category-btn" onclick="goNav('category', 'Mobiliario', 'Divisiones para baños')"><span>DIVISIONES PARA BAÑOS</span><i class="fas fa-chevron-right"></i></div>
@@ -162,21 +155,20 @@
 
 <script>
 const telefono = "573108814049";
-// TODOS TUS VIDEOS RESTAURADOS
 const imagenes = {
     'PanelJapones': ["https://i.postimg.cc/65LM779r/01.png", "https://i.postimg.cc/4NbWKKJQ/02.png", "https://i.postimg.cc/Dwby2pNx/Panel-Japones.png"],
-    'Sheer': ["https://i.postimg.cc/jdQMWWsD/01.png", "https://i.postimg.cc/4NbWKKJK/02.png"],
+    'Sheer': ["https://i.postimg.cc/jdQMWWsD/01.png", "https://i.postimg.cc/4NbWKKJQ/02.png"],
     'Muebles': ["https://i.postimg.cc/fbdTvQ5Q/closet-4696557.jpg", "https://i.postimg.cc/Z5KygDMQ/467694882.png"],
     'Mobiliario': ["https://i.postimg.cc/ncnsjPpL/467725657.png"],
     'Blackout': ["https://i.postimg.cc/HsCSs0Cw/02.png"],
     'Verticales': ["https://i.postimg.cc/T1PP14tT/01.png"],
     'Videos': [
         {id: "btJDKdDBmnE", title: "Dual System"}, 
-        {id: "cOaMki5fR6E", title: "Video 02"}, 
-        {id: "us7gpcVGY_A", title: "Video 03"},
-        {id: "WEhcw5tUyjg", title: "Video 04"},
-        {id: "6wAw6sG1YAo", title: "Video 05"},
-        {id: "wW5m7W3TN5Q", title: "Video 06"}
+        {id: "cOaMki5fR6E", title: "Motorizadas"}, 
+        {id: "us7gpcVGY_A", title: "Panel Japonés"},
+        {id: "WEhcw5tUyjg", title: "Sheer Elegance"},
+        {id: "6wAw6sG1YAo", title: "Verticales"},
+        {id: "wW5m7W3TN5Q", title: "Remodelaciones"}
     ]
 };
 
@@ -191,29 +183,37 @@ window.onpopstate = render;
 
 function render() {
     const s = history.state || {view: 'home'};
+    const viewer = document.getElementById('media-viewer');
+    const categoryPage = document.getElementById('category-view');
+    const iframe = document.getElementById('video-iframe');
+
+    // Reset general de páginas
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById('media-viewer').style.display = 'none';
-    document.getElementById('video-iframe').src = "";
-    document.getElementById('video-iframe').style.display = "none";
-    document.getElementById('full-image').style.display = "none";
 
     if (s.view === 'home') {
         document.getElementById('home').classList.add('active');
+        viewer.style.display = 'none';
+        iframe.src = "";
     } else if (s.view === 'submenu') {
         document.getElementById('submenu-view').classList.add('active');
+        viewer.style.display = 'none';
+        iframe.src = "";
     } else if (s.view === 'category') {
-        document.getElementById('category-view').classList.add('active');
+        categoryPage.classList.add('active');
         loadCategory(s.catId, s.catName);
+        viewer.style.display = 'none';
+        iframe.src = "";
     } else if (s.view === 'viewer') {
-        // Mantiene la lista cargada atrás para evitar el pantallazo negro al volver
-        document.getElementById('category-view').classList.add('active');
+        // DOBLE SEGURO: Mantenemos la página de categoría activa DEBAJO del visor
+        categoryPage.classList.add('active');
         loadCategory(s.catId, s.catName);
-        document.getElementById('media-viewer').style.display = 'flex';
+        viewer.style.display = 'flex';
         updateViewer();
     }
 }
 
 function loadCategory(id, name) {
+    if (!id) return;
     const container = document.getElementById('product-container');
     document.getElementById('view-title').innerText = name;
     currentCatName = name;
@@ -260,7 +260,6 @@ function updateViewer() {
         `<div class="dot ${i===currentIndex?'active':''}"></div>`).join('');
 }
 
-// SWIPE REFORZADO PARA VIDEOS
 let tStart = 0;
 document.getElementById('touch-overlay').addEventListener('touchstart', e => { 
     tStart = e.touches[0].clientX; 
@@ -280,7 +279,10 @@ function enviarWA(msg) {
     window.open(`https://wa.me/${telefono}?text=${encodeURIComponent('Hola Johanna, solicito información de: ' + msg)}`, '_blank');
 }
 
-window.onload = () => { if(!history.state) history.replaceState({view:'home'}, ""); render(); };
+window.onload = () => { 
+    if(!history.state) history.replaceState({view:'home'}, ""); 
+    render(); 
+};
 </script>
 </body>
 </html>
