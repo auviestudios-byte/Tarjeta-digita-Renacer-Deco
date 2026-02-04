@@ -184,29 +184,32 @@ window.onpopstate = render;
 function render() {
     const s = history.state || {view: 'home'};
     const viewer = document.getElementById('media-viewer');
+    const homePage = document.getElementById('home');
+    const submenuPage = document.getElementById('submenu-view');
     const categoryPage = document.getElementById('category-view');
     const iframe = document.getElementById('video-iframe');
 
-    // Reset general de páginas
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    // Reset general de visibilidad de páginas
+    homePage.classList.remove('active');
+    submenuPage.classList.remove('active');
+    categoryPage.classList.remove('active');
 
     if (s.view === 'home') {
-        document.getElementById('home').classList.add('active');
+        homePage.classList.add('active');
         viewer.style.display = 'none';
         iframe.src = "";
     } else if (s.view === 'submenu') {
-        document.getElementById('submenu-view').classList.add('active');
+        submenuPage.classList.add('active');
         viewer.style.display = 'none';
         iframe.src = "";
     } else if (s.view === 'category') {
         categoryPage.classList.add('active');
         loadCategory(s.catId, s.catName);
         viewer.style.display = 'none';
-        iframe.src = "";
+        iframe.src = ""; // Al volver a la lista, matamos el video
     } else if (s.view === 'viewer') {
-        // DOBLE SEGURO: Mantenemos la página de categoría activa DEBAJO del visor
+        // Mantenemos la rejilla de productos activa debajo para evitar fondos negros
         categoryPage.classList.add('active');
-        loadCategory(s.catId, s.catName);
         viewer.style.display = 'flex';
         updateViewer();
     }
@@ -248,7 +251,10 @@ function updateViewer() {
     if (isVideoMode) {
         img.style.display = 'none';
         vid.style.display = 'block';
-        vid.src = `https://www.youtube.com/embed/${currentList[currentIndex].id}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;
+        const videoUrl = `https://www.youtube.com/embed/${currentList[currentIndex].id}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;
+        if (vid.src !== videoUrl) {
+            vid.src = videoUrl;
+        }
         info.innerText = currentList[currentIndex].title;
     } else {
         vid.style.display = 'none'; vid.src = "";
