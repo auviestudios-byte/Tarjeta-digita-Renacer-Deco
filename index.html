@@ -86,7 +86,7 @@
         }
         .viewer-body { flex: 1; width: 100%; position: relative; display: flex; align-items: center; justify-content: center; }
         
-        /* Esta capa es la que permite el swipe sobre el video sin bloquearlo */
+        /* Capa para detectar el swipe sin bloquear el play del video */
         #touch-overlay { 
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
             z-index: 10002; background: transparent; touch-action: none;
@@ -162,6 +162,7 @@
 
 <script>
 const telefono = "573108814049";
+// TODOS TUS VIDEOS RESTAURADOS
 const imagenes = {
     'PanelJapones': ["https://i.postimg.cc/65LM779r/01.png", "https://i.postimg.cc/4NbWKKJQ/02.png", "https://i.postimg.cc/Dwby2pNx/Panel-Japones.png"],
     'Sheer': ["https://i.postimg.cc/jdQMWWsD/01.png", "https://i.postimg.cc/4NbWKKJK/02.png"],
@@ -169,7 +170,14 @@ const imagenes = {
     'Mobiliario': ["https://i.postimg.cc/ncnsjPpL/467725657.png"],
     'Blackout': ["https://i.postimg.cc/HsCSs0Cw/02.png"],
     'Verticales': ["https://i.postimg.cc/T1PP14tT/01.png"],
-    'Videos': [{id: "btJDKdDBmnE", title: "Dual System"}, {id: "cOaMki5fR6E", title: "Video 02"}]
+    'Videos': [
+        {id: "btJDKdDBmnE", title: "Dual System"}, 
+        {id: "cOaMki5fR6E", title: "Video 02"}, 
+        {id: "us7gpcVGY_A", title: "Video 03"},
+        {id: "WEhcw5tUyjg", title: "Video 04"},
+        {id: "6wAw6sG1YAo", title: "Video 05"},
+        {id: "wW5m7W3TN5Q", title: "Video 06"}
+    ]
 };
 
 let currentList = [], currentIndex = 0, isVideoMode = false, currentCatName = "";
@@ -197,7 +205,7 @@ function render() {
         document.getElementById('category-view').classList.add('active');
         loadCategory(s.catId, s.catName);
     } else if (s.view === 'viewer') {
-        // SOLUCIÓN PANTALLAZO NEGRO: Si entramos al visor, aseguramos que la lista esté cargada detrás
+        // Mantiene la lista cargada atrás para evitar el pantallazo negro al volver
         document.getElementById('category-view').classList.add('active');
         loadCategory(s.catId, s.catName);
         document.getElementById('media-viewer').style.display = 'flex';
@@ -252,7 +260,7 @@ function updateViewer() {
         `<div class="dot ${i===currentIndex?'active':''}"></div>`).join('');
 }
 
-// SWIPE (DEDO) - REPARADO PARA VIDEOS
+// SWIPE REFORZADO PARA VIDEOS
 let tStart = 0;
 document.getElementById('touch-overlay').addEventListener('touchstart', e => { 
     tStart = e.touches[0].clientX; 
