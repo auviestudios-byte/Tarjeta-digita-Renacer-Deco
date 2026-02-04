@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Catálogo | Johanna M. Cuesta</title>
+    
+    <link rel="icon" type="image/png" href="https://i.postimg.cc/mDxyknVV/Foto-portada.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-lila: #8e44ad; 
+            --dark-gray: #2d3436; 
+            --whatsapp-green: #25d366;
+            --fb-blue: #1877F2;
+            --ig-pink: #E1306C;
+        }
+
+        * { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0; background-color: #ffffff;
+            display: flex; justify-content: center;
+            min-height: 100vh; position: relative; overflow-x: hidden;
+        }
+
+        body::before {
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('https://i.postimg.cc/8csTHrHX/ondas_lineas_gris_10.png');
+            background-size: cover; background-position: center; opacity: 0.25; z-index: -1;
+        }
+
+        .main-content { width: 100%; max-width: 450px; min-height: 100vh; padding: 10px 0; }
+        header { text-align: center; padding: 30px 20px 20px; }
+
+        .logo-placeholder {
+            width: 130px; height: 130px; background: #fff; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; margin: 0 auto 15px;
+            border: 3px solid var(--primary-lila); box-shadow: 0 4px 15px rgba(142, 68, 173, 0.2);
+            overflow: hidden;
+        }
+        .logo-placeholder img { width: 100%; height: 100%; object-fit: cover; }
+
+        .tagline { font-size: 1.1rem; color: #333; margin: 10px auto 20px; max-width: 80%; line-height: 1.4; font-weight: 500; text-align: center; }
+        .social-links { display: flex; justify-content: center; gap: 25px; margin-bottom: 25px; }
+        .social-links a i.fa-whatsapp { color: var(--whatsapp-green); }
+        .social-links a i.fa-instagram { color: var(--ig-pink); }
+        .social-links a i.fa-facebook { color: var(--fb-blue); }
+
+        .subtitle { color: #333; font-weight: 600; text-align: center; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; }
+
+        .category-btn {
+            background-color: var(--dark-gray);
+            background-image: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            color: white; padding: 22px; margin: 0 20px 15px; border-radius: 12px;
+            display: flex; justify-content: space-between; align-items: center;
+            cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2); 
+            transition: all 0.3s ease;
+        }
+        
+        .video-btn { background-color: var(--primary-lila); }
+
+        .submenu-btn {
+            background: white; color: var(--dark-gray); border: 1px solid var(--primary-lila);
+            padding: 18px; margin: 0 5px 12px; border-radius: 10px;
+            display: flex; justify-content: space-between; align-items: center;
+            cursor: pointer; font-weight: 600;
+        }
+
+        .btn-back { 
+            background: var(--dark-gray); color: white; border: 2px solid var(--primary-lila); 
+            padding: 15px; border-radius: 10px; width: 100%; font-weight: bold; 
+            margin-bottom: 20px; cursor: pointer; animation: haloPulse 2s infinite ease-in-out;
+        }
+
+        @keyframes haloPulse {
+            0%, 100% { box-shadow: 0 0 5px rgba(142, 68, 173, 0.4); }
+            50% { box-shadow: 0 0 20px rgba(142, 68, 173, 0.8); }
+        }
+
+        .page { display: none; padding: 0 20px 40px; animation: fadeInPage 0.4s ease; }
+        .active { display: block; }
+
+        .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .product-card {
+            background: rgba(255, 255, 255, 0.9); border-radius: 10px; padding: 10px;
+            text-align: center; border: 1px solid #ddd;
+        }
+
+        .product-img {
+            width: 100%; aspect-ratio: 1/1; background: #f9f9f9; border-radius: 8px;
+            margin-bottom: 10px; display: flex; align-items: center; justify-content: center;
+            overflow: hidden; cursor: pointer; position: relative;
+        }
+        .product-img img { width: 100%; height: 100%; object-fit: contain; }
+        .play-icon { position: absolute; color: white; font-size: 2rem; opacity: 0.8; text-shadow: 0 0 10px rgba(0,0,0,0.5); }
+
+        .btn-buy { background: var(--primary-lila); color: white; border: none; padding: 12px 5px; border-radius: 6px; width: 100%; font-weight: bold; cursor: pointer; }
+
+        /* Media Viewer */
+        #media-viewer {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 9999; flex-direction: column;
+            justify-content: center; align-items: center;
+        }
+        .viewer-container { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; position: relative; }
+        #full-image { max-width: 95%; max-height: 80%; border-radius: 5px; object-fit: contain; display: none; }
+        #video-iframe { width: 100%; height: 75vh; border: none; display: none; background: #000; }
+        
+        .close-viewer { 
+            position: fixed; top: 25px; right: 20px; color: white; font-size: 30px; 
+            background: rgba(142, 68, 173, 0.8); width: 45px; height: 45px; 
+            display: flex; align-items: center; justify-content: center; 
+            border-radius: 50%; cursor: pointer; z-index: 10005; 
+        }
+
+        .viewer-footer { position: absolute; bottom: 30px; width: 100%; text-align: center; z-index: 10002; }
+        .dots-container { display: flex; justify-content: center; gap: 8px; margin-top: 15px; }
+        .dot { width: 8px; height: 8px; background: rgba(255,255,255,0.3); border-radius: 50%; transition: 0.3s; }
+        .dot.active { background: var(--primary-lila); width: 22px; border-radius: 10px; box-shadow: 0 0 10px var(--primary-lila); }
+
+        footer { text-align: center; padding: 40px 0; color: #333; font-size: 0.8rem; font-weight: bold; }
+    </style>
+</head>
+<body oncontextmenu="return false">
+
+<div class="main-content">
+    <div id="home" class="page active">
+        <header>
+            <img src="https://i.postimg.cc/kMc2h831/Logo__Blanco-violeta.png" alt="Renacer Deco" style="max-width: 220px; margin-bottom: 20px;">
+            <div class="logo-placeholder"><img src="https://i.postimg.cc/mDxyknVV/Foto-portada.png"></div>
+            <h1 style="margin: 0; font-size: 24px; text-align: center;">Johanna M. Cuesta</h1>
+            <p style="margin: 5px 0; font-size: 18px; color: #666; text-align: center;">Directora Comercial</p>
+            <p class="tagline">Brindamos calidad, confianza y estilo en cada proyecto.</p>
+            
+            <div class="social-links">
+                <a href="https://wa.me/573108814049" target="_blank"><i class="fab fa-whatsapp fa-2x"></i></a>
+                <a href="#"><i class="fab fa-instagram fa-2x"></i></a>
+                <a href="#"><i class="fab fa-facebook fa-2x"></i></a>
+            </div>
+            <p class="subtitle">Catálogo de Servicios</p>
+        </header>
+
+        <div class="category-btn" onclick="showSubmenu()"><span>CORTINAS DE LUJO</span><i class="fas fa-chevron-right"></i></div>
+        <div class="category-btn" onclick="showCategory('Muebles', 'Muebles de Lujo')"><span>MUEBLES DE LUJO</span><i class="fas fa-chevron-right"></i></div>
+        <div class="category-btn" onclick="showCategory('Mobiliario', 'Divisiones para baños')"><span>DIVISIONES PARA BAÑOS</span><i class="fas fa-chevron-right"></i></div>
+        <div class="category-btn video-btn" onclick="showCategory('Videos', 'Nuestros videos')">
+            <span><i class="fas fa-play-circle"></i> NUESTROS VIDEOS</span><i class="fas fa-chevron-right"></i>
+        </div>
+        
+        <footer>@ auviestudios - todos los derechos reservados I 2026</footer>
+    </div>
+
+    <div id="submenu-view" class="page">
+        <button class="btn-back" onclick="goHome()">← VOLVER AL MENÚ PRINCIPAL</button>
+        <h2 style="text-align:center; color: var(--primary-lila);">TIPO DE CORTINA</h2>
+        <div class="submenu-btn" onclick="showCategory('PanelJapones', 'Panel Japonés')"><span>Panel Japonés</span><i class="fas fa-chevron-right"></i></div>
+        <div class="submenu-btn" onclick="showCategory('Sheer', 'Sheer Elegance')"><span>Sheer Elegance</span><i class="fas fa-chevron-right"></i></div>
+        <div class="submenu-btn" onclick="showCategory('Blackout', 'Blackout')"><span>Blackout</span><i class="fas fa-chevron-right"></i></div>
+        <div class="submenu-btn" onclick="showCategory('Verticales', 'Verticales')"><span>Verticales</span><i class="fas fa-chevron-right"></i></div>
+    </div>
+
+    <div id="category-view" class="page">
+        <button class="btn-back" id="back-logic" onclick="handlePhysicalBack()">← VOLVER</button>
+        <h2 id="view-title" style="text-align:center; color:var(--primary-lila);"></h2>
+        <div class="product-grid" id="product-container"></div>
+    </div>
+</div>
+
+<div id="media-viewer">
+    <div class="close-viewer" onclick="handlePhysicalBack()">&times;</div>
+    <div class="viewer-container">
+        <img id="full-image" src="">
+        <iframe id="video-iframe" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+    <div class="viewer-footer">
+        <div id="viewer-info" style="color:white; font-weight:bold;"></div>
+        <div class="dots-container" id="dots-box"></div>
+    </div>
+</div>
+
+<script>
+const telefono = "573108814049";
+
+const imagenes = {
+    'PanelJapones': ["https://i.postimg.cc/65LM779r/01.png", "https://i.postimg.cc/4NbWKKJQ/02.png", "https://i.postimg.cc/Dwby2pNx/Panel-Japones.png", "https://i.postimg.cc/xTLtWMGL/03.png", "https://i.postimg.cc/5trBH2qF/04.png"],
+    'Sheer': ["https://i.postimg.cc/jdQMWWsD/01.png", "https://i.postimg.cc/4NbWKKJK/02.png", "https://i.postimg.cc/T1nmKjCR/Sheer-Black-Out-Guadalajara.png", "https://i.postimg.cc/sgjS2hSz/sheer3.png", "https://i.postimg.cc/nVqQYkGZ/cortinas-sheer-elegance-01.png"],
+    'Muebles': ["https://i.postimg.cc/fbdTvQ5Q/closet-4696557.jpg", "https://i.postimg.cc/Z5KygDMQ/467694882_955952389887909_877217.png", "https://i.postimg.cc/GtZ1tqTJ/467818417_955952446554570_730833.png", "https://i.postimg.cc/Y9C7s4wg/FB_IMG_1732643210600.jpg", "https://i.postimg.cc/cHYKwqvv/467660813_955655989917549_666305.png", "https://i.postimg.cc/q7WhNBvf/467521857_955619833254498_528063.png", "https://i.postimg.cc/ncnsjPpL/467725657_957044326445382_448672.png"],
+    'Mobiliario': [],
+    'Blackout': ["https://i.postimg.cc/HsCSs0Cw/02.png", "https://i.postimg.cc/xTSsTGSG/01.png", "https://i.postimg.cc/QC86vp0Q/black-ou-T-01.png", "https://i.postimg.cc/Vk8Fh9v7/03.png", "https://i.postimg.cc/856JD3np/04.png"],
+    'Verticales': ["https://i.postimg.cc/T1PP14tT/01.png", "https://i.postimg.cc/k4s4nmvB/02.png", "https://i.postimg.cc/hjsjSB1X/03.png", "https://i.postimg.cc/qRwRkTxg/04.png", "https://i.postimg.cc/x8dd8460/05.png"],
+    'Videos': [
+        {id: "btJDKdDBmnE", title: "Dual System"},
+        {id: "cOaMki5fR6E", title: "Video 02"},
+        {id: "us7gpcVGY_A", title: "Video 03"},
+        {id: "WEhcw5tUyjg", title: "Video 04"},
+        {id: "6wAw6sG1YAo", title: "Video 05"},
+        {id: "wW5m7W3TN5Q", title: "Video 06"},
+        {id: "8xYay9erx-U", title: "Video 07"}
+    ] 
+};
+
+let currentList=[], currentIndex=0, isVideoMode=false, currentCatName="";
+
+function goHome(){
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.getElementById('home').classList.add('active');
+}
+
+function showSubmenu(){
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.getElementById('submenu-view').classList.add('active');
+}
+
+function showCategory(id, name){
+    history.pushState({view:'category'},"");
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    const container = document.getElementById('product-container');
+    document.getElementById('view-title').innerText = name;
+    currentCatName = name;
+    container.innerHTML = "";
+    
+    isVideoMode = (id === 'Videos');
+    currentList = imagenes[id] || [];
+
+    currentList.forEach((item, i) => {
+        const url = isVideoMode ? `https://img.youtube.com/vi/${item.id}/0.jpg` : item;
+        const title = isVideoMode ? item.title : `${name} 0${i+1}`;
+        
+        container.innerHTML += `
+        <div class="product-card">
+            <div class="product-img" onclick="openViewer(${i})">
+                <img src="${url}">
+                ${isVideoMode ? '<i class="fas fa-play play-icon"></i>' : ''}
+            </div>
+            <div style="font-weight:bold;margin-bottom:8px;font-size:0.85rem">${title}</div>
+            <button class="btn-buy" onclick="enviarWhatsApp('${title}')">Solicitar Info</button>
+        </div>`;
+    });
+    
+    document.getElementById('category-view').classList.add('active');
+}
+
+function openViewer(index){
+    history.pushState({view:'viewer'},"");
+    currentIndex = index;
+    const viewer = document.getElementById('media-viewer');
+    const img = document.getElementById('full-image');
+    const iframe = document.getElementById('video-iframe');
+    const dots = document.getElementById('dots-box');
+    
+    viewer.style.display = 'flex';
+    if(isVideoMode){
+        img.style.display = 'none';
+        iframe.style.display = 'block';
+        iframe.src = `https://www.youtube.com/embed/${currentList[currentIndex].id}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;
+        document.getElementById('viewer-info').innerText = currentList[currentIndex].title;
+    } else {
+        iframe.style.display = 'none';
+        iframe.src = "";
+        img.style.display = 'block';
+        img.src = currentList[currentIndex];
+        document.getElementById('viewer-info').innerText = `${currentCatName} 0${currentIndex+1}`;
+    }
+    dots.innerHTML = currentList.map((_,f)=>`<div class="dot ${f===currentIndex?'active':''}"></div>`).join('');
+}
+
+function handlePhysicalBack(){ history.back(); }
+
+window.onpopstate = function(e){
+    const state = e.state;
+    document.getElementById('media-viewer').style.display = 'none';
+    document.getElementById('video-iframe').src = "";
+    if(!state) goHome();
+    else if(state.view === 'category') {
+        document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+        document.getElementById('category-view').classList.add('active');
+    }
+};
+
+function enviarWhatsApp(msg){
+    const text = encodeURIComponent(`Hola Johanna, solicito información de: ${msg}`);
+    window.open(`https://wa.me/${telefono}?text=${text}`, '_blank');
+}
+</script>
+</body>
+</html>
