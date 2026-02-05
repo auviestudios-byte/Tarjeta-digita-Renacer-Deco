@@ -247,7 +247,8 @@ footer { text-align: center; padding: 20px; color: var(--brand-color); font-size
 
 <div class="category-btn" onclick="goNav('submenu')"><span>CORTINAS DE LUJO</span><i class="fas fa-chevron-right"></i></div>
 <div class="category-btn" onclick="goNav('category','Muebles','Muebles de Lujo')"><span>MUEBLES DE LUJO</span><i class="fas fa-chevron-right"></i></div>
-<div class="category-btn" onclick="goNav('category','Mobiliario','Divisiones para baños')"><span>DIVISIONES PARA BAÑOS</span><i class="fas fa-chevron-right"></i></div>
+<div class="category-btn" onclick="goNav('category','Remodelaciones','Remodelaciones')"><span>REMODELACIONES</span><i class="fas fa-chevron-right"></i></div>
+<div class="category-btn" onclick="goNav('category','Renders','Renders')"><span>RENDERS</span><i class="fas fa-chevron-right"></i></div>
 <div class="category-btn video-btn" onclick="goNav('category','Videos','Nuestros videos')">
 <span><i class="fas fa-play-circle"></i> NUESTROS VIDEOS</span><i class="fas fa-chevron-right"></i>
 </div>
@@ -326,8 +327,22 @@ Muebles:[
 "https://i.postimg.cc/GtZ1tqTJ/467818417_955952446554570_730833.png",
 "https://i.postimg.cc/fbdTvQ5Q/closet-4696557.jpg"
 ],
-Mobiliario:[
-"https://i.postimg.cc/ncnsjPpL/467725657.png"
+Remodelaciones:[
+"https://i.postimg.cc/dDqDfpKh/Remodelacion-01.png",
+"https://i.postimg.cc/wRTvsykn/remodelacion-02.png",
+"https://i.postimg.cc/1V5tNnHZ/remodelacion-03.png",
+"https://i.postimg.cc/4nJn0qTh/remodelacion-04.png",
+"https://i.postimg.cc/QVXVzwrb/remodelacion-05.png",
+"https://i.postimg.cc/NLgLnSwD/remodelacion-06.png",
+"https://i.postimg.cc/BtqtzkGx/remodelacion-07.png"
+],
+Renders:[
+"https://i.postimg.cc/mP9fLZsb/01.png",
+"https://i.postimg.cc/WdZLNpvj/02.png",
+"https://i.postimg.cc/ts6QqRjp/03.png",
+"https://i.postimg.cc/G4DwL3CL/04.png",
+"https://i.postimg.cc/LqMdnd9S/05.png",
+"https://i.postimg.cc/06qgbgkq/06.jpg"
 ],
 Videos:[
 {id:"btJDKdDBmnE",title:"Dual System"},
@@ -346,13 +361,12 @@ history.pushState({view,catId,catName}, document.title);
 render();
 }
 
-// Función para cerrar el visualizador de golpe
 function closeAllViewers() {
     const viewer = document.getElementById('media-viewer');
     const iframe = document.getElementById('video-iframe');
     viewer.style.display = 'none';
-    iframe.src = ""; // Corta el video inmediatamente
-    history.back(); // Limpia la URL
+    iframe.src = "";
+    history.back();
 }
 
 window.onpopstate=render;
