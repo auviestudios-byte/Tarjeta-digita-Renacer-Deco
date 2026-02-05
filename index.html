@@ -70,7 +70,6 @@ h1{margin:10px 0 5px; color: #000; font-size: 1.6rem; font-weight: 800;}
 
 .subtitle{text-transform:uppercase;font-weight:700;margin-bottom:25px; letter-spacing: 1px; color: #000;}
 
-/* BOTONES PRINCIPALES (MENÚ) */
 .category-btn{
     margin:0 20px 15px;
     padding:22px;
@@ -86,7 +85,6 @@ h1{margin:10px 0 5px; color: #000; font-size: 1.6rem; font-weight: 800;}
     font-weight: 600;
 }
 
-/* BOTONES SUBMENÚ CORTINAS: SOLO BORDE */
 .submenu-btn {
     background: transparent !important;
     color: var(--brand-color) !important;
@@ -274,7 +272,7 @@ footer { text-align: center; padding: 20px; color: var(--brand-color); font-size
 </div>
 
 <div id="media-viewer">
-<div class="close-viewer" onclick="history.back()">×</div>
+<div class="close-viewer" onclick="closeAllViewers()">×</div>
 <div class="viewer-body">
 <div id="touch-overlay"></div>
 <img id="full-image">
@@ -348,6 +346,15 @@ history.pushState({view,catId,catName}, document.title);
 render();
 }
 
+// Función para cerrar el visualizador de golpe
+function closeAllViewers() {
+    const viewer = document.getElementById('media-viewer');
+    const iframe = document.getElementById('video-iframe');
+    viewer.style.display = 'none';
+    iframe.src = ""; // Corta el video inmediatamente
+    history.back(); // Limpia la URL
+}
+
 window.onpopstate=render;
 
 function render(){
@@ -357,25 +364,23 @@ const iframe=document.getElementById('video-iframe');
 
 document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
 
+if(s.view !== 'viewer'){
+    viewer.style.display='none';
+    iframe.src="";
+}
+
 if(s.view==='home'){
 document.getElementById('home').classList.add('active');
-viewer.style.display='none';
-iframe.src="";
 }
 else if(s.view==='submenu'){
 document.getElementById('submenu-view').classList.add('active');
-viewer.style.display='none';
-iframe.src="";
 }
 else if(s.view==='category'){
 document.getElementById('category-view').classList.add('active');
 loadCategory(s.catId,s.catName);
-viewer.style.display='none';
-iframe.src="";
 }
 else if(s.view==='viewer'){
 document.getElementById('category-view').classList.add('active');
-loadCategory(s.catId,s.catName);
 viewer.style.display='flex';
 updateViewer();
 }
