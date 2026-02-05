@@ -10,18 +10,17 @@
 
 <style>
 :root {
-    --primary-lila:#8e44ad;
-    --dark-gray:#2d3436;
+    --brand-color: #A1378C;
     --whatsapp-green:#25d366;
     --fb-blue:#1877F2;
     --ig-pink:#E1306C;
 }
 
-* { box-sizing:border-box; }
+* { box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
 
 body {
     margin:0;
-    font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
     display:flex;
     justify-content:center;
     background:#fff;
@@ -32,8 +31,8 @@ body::before{
     content:"";
     position:fixed;
     inset:0;
-    background:url('https://i.postimg.cc/8csTHrHX/ondas_lineas_gris_10.png') center/cover;
-    opacity:.25;
+    background: url('https://i.postimg.cc/8csTHrHX/ondas_lineas_gris_10.png') center/cover;
+    opacity:.15;
     z-index:-1;
 }
 
@@ -45,7 +44,7 @@ body::before{
 }
 
 .page{display:none;}
-.page.active{display:block;animation:fadeIn .3s;}
+.page.active{display:block !important; animation:fadeIn .3s;}
 
 header{text-align:center;padding:30px 20px 20px;}
 
@@ -53,15 +52,15 @@ header{text-align:center;padding:30px 20px 20px;}
     width:130px;height:130px;
     margin:0 auto 15px;
     border-radius:50%;
-    border:3px solid var(--primary-lila);
+    border:3px solid var(--brand-color);
     overflow:hidden;
-    box-shadow:0 4px 15px rgba(142,68,173,.2);
+    box-shadow:0 4px 15px rgba(161,55,140,.2);
 }
 .logo-placeholder img{width:100%;height:100%;object-fit:cover;}
 
-h1{margin:10px 0 5px;color:var(--dark-gray);}
-.cargo{color:#666;}
-.tagline{max-width:85%;margin:10px auto 20px;font-weight:500;}
+h1{margin:10px 0 5px; color: #000; font-size: 1.6rem; font-weight: 800;}
+.cargo{color:#000; font-size: 1.1rem; font-weight: 600;}
+.tagline{max-width:85%;margin:10px auto 20px;font-weight:500; line-height: 1.4; color: #333;}
 
 .social-links{display:flex;justify-content:center;gap:25px;margin-bottom:25px;}
 .social-links i{font-size:2rem;}
@@ -69,30 +68,49 @@ h1{margin:10px 0 5px;color:var(--dark-gray);}
 .fa-instagram{color:var(--ig-pink);}
 .fa-facebook{color:var(--fb-blue);}
 
-.subtitle{text-transform:uppercase;font-weight:600;margin-bottom:25px;}
+.subtitle{text-transform:uppercase;font-weight:700;margin-bottom:25px; letter-spacing: 1px; color: #000;}
 
+/* BOTONES PRINCIPALES (MENÚ) */
 .category-btn{
     margin:0 20px 15px;
     padding:22px;
-    background:var(--dark-gray);
+    background: var(--brand-color);
     color:#fff;
     border-radius:12px;
     display:flex;
     justify-content:space-between;
+    align-items: center;
     cursor:pointer;
+    border:none;
+    box-shadow: 0 4px 10px rgba(161,55,140,0.2);
+    font-weight: 600;
 }
 
-.video-btn{background:var(--primary-lila);}
+/* BOTONES SUBMENÚ CORTINAS: SOLO BORDE */
+.submenu-btn {
+    background: transparent !important;
+    color: var(--brand-color) !important;
+    border: 2px solid var(--brand-color) !important;
+    box-shadow: none !important;
+}
+
+.video-btn{
+    background: #fff;
+    color: var(--brand-color);
+    border: 2px solid var(--brand-color);
+}
 
 .btn-back{
-    margin:20px;
+    margin:0 20px 20px;
     width:calc(100% - 40px);
     padding:15px;
-    background:var(--dark-gray);
-    color:#fff;
-    border:2px solid var(--primary-lila);
+    background: var(--brand-color);
+    color: #fff;
+    border: none;
     border-radius:10px;
     font-weight:bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(161,55,140,0.3);
 }
 
 .product-grid{
@@ -103,10 +121,10 @@ h1{margin:10px 0 5px;color:var(--dark-gray);}
 }
 
 .product-card{
-    background:#fff;
+    background:rgba(255,255,255,0.95);
     border-radius:10px;
     padding:10px;
-    border:1px solid #ddd;
+    border:1px solid #eee;
     text-align:center;
 }
 
@@ -117,25 +135,23 @@ h1{margin:10px 0 5px;color:var(--dark-gray);}
     display:flex;
     align-items:center;
     justify-content:center;
+    background: #fff;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    overflow: hidden;
 }
 
 .product-img img{width:100%;height:100%;object-fit:contain;}
 
-.play-icon{
-    position:absolute;
-    font-size:2.5rem;
-    color:#fff;
-    text-shadow:0 0 10px #000;
-}
-
 .btn-buy{
     width:100%;
-    padding:12px;
-    background:var(--primary-lila);
-    color:#fff;
-    border:none;
+    padding:10px 5px;
+    background: transparent;
+    color: var(--brand-color);
+    border: 1.5px solid var(--brand-color);
     border-radius:6px;
     font-weight:bold;
+    cursor: pointer;
 }
 
 #media-viewer{
@@ -159,7 +175,7 @@ h1{margin:10px 0 5px;color:var(--dark-gray);}
     position:absolute;
     inset:0;
     z-index:10002;
-    touch-action:pan-y;
+    touch-action:none;
 }
 
 #video-iframe{
@@ -167,12 +183,14 @@ h1{margin:10px 0 5px;color:var(--dark-gray);}
     height:75vh;
     border:none;
     display:none;
+    z-index: 10000;
 }
 
 #full-image{
     max-width:100%;
     max-height:85%;
     display:none;
+    object-fit: contain;
 }
 
 .close-viewer{
@@ -182,26 +200,29 @@ h1{margin:10px 0 5px;color:var(--dark-gray);}
     width:45px;
     height:45px;
     border-radius:50%;
-    background:rgba(142,68,173,.85);
+    background:var(--brand-color);
     color:#fff;
     font-size:30px;
     display:flex;
     align-items:center;
     justify-content:center;
     z-index:10005;
+    cursor: pointer;
 }
 
 .viewer-footer{
     padding:20px 0 40px;
     color:#fff;
     text-align:center;
+    z-index: 10003;
 }
 
 .dots-container{display:flex;justify-content:center;gap:8px;margin-top:15px;}
 .dot{width:8px;height:8px;background:#444;border-radius:50%;}
-.dot.active{background:var(--primary-lila);width:20px;border-radius:10px;}
+.dot.active{background:var(--brand-color);width:20px;border-radius:10px;}
 
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+footer { text-align: center; padding: 20px; color: var(--brand-color); font-size: 0.8rem; font-weight: bold; }
 </style>
 </head>
 
@@ -211,7 +232,7 @@ h1{margin:10px 0 5px;color:var(--dark-gray);}
 
 <div id="home" class="page active">
 <header>
-<img src="https://i.postimg.cc/kMc2h831/Logo__Blanco-violeta.png" style="max-width:200px;">
+<img src="https://i.postimg.cc/kMc2h831/Logo__Blanco-violeta.png" style="max-width:200px; margin-bottom: 15px;">
 <div class="logo-placeholder"><img src="https://i.postimg.cc/mDxyknVV/Foto-portada.png"></div>
 <h1>Johanna M. Cuesta</h1>
 <p class="cargo">Directora Comercial</p>
@@ -226,39 +247,41 @@ h1{margin:10px 0 5px;color:var(--dark-gray);}
 <p class="subtitle">Catálogo de Servicios</p>
 </header>
 
-<div class="category-btn" onclick="goNav('submenu')">CORTINAS DE LUJO</div>
-<div class="category-btn" onclick="goNav('category','Muebles','Muebles de Lujo')">MUEBLES DE LUJO</div>
-<div class="category-btn" onclick="goNav('category','Mobiliario','Divisiones para baños')">DIVISIONES PARA BAÑOS</div>
+<div class="category-btn" onclick="goNav('submenu')"><span>CORTINAS DE LUJO</span><i class="fas fa-chevron-right"></i></div>
+<div class="category-btn" onclick="goNav('category','Muebles','Muebles de Lujo')"><span>MUEBLES DE LUJO</span><i class="fas fa-chevron-right"></i></div>
+<div class="category-btn" onclick="goNav('category','Mobiliario','Divisiones para baños')"><span>DIVISIONES PARA BAÑOS</span><i class="fas fa-chevron-right"></i></div>
 <div class="category-btn video-btn" onclick="goNav('category','Videos','Nuestros videos')">
-<i class="fas fa-play-circle"></i> NUESTROS VIDEOS
+<span><i class="fas fa-play-circle"></i> NUESTROS VIDEOS</span><i class="fas fa-chevron-right"></i>
 </div>
+<footer>@ auviestudios - 2026</footer>
 </div>
 
 <div id="submenu-view" class="page">
-<button class="btn-back" onclick="goNav('home')">← VOLVER</button>
-<div class="category-btn" onclick="goNav('category','PanelJapones','Panel Japonés')">Panel Japonés</div>
-<div class="category-btn" onclick="goNav('category','Sheer','Sheer Elegance')">Sheer Elegance</div>
-<div class="category-btn" onclick="goNav('category','Blackout','Blackout')">Blackout</div>
-<div class="category-btn" onclick="goNav('category','Verticales','Verticales')">Verticales</div>
+<button class="btn-back" onclick="goNav('home')">← VOLVER AL MENÚ PRINCIPAL</button>
+<h2 style="text-align:center; color: var(--brand-color);">TIPO DE CORTINA</h2>
+<div class="category-btn submenu-btn" onclick="goNav('category','PanelJapones','Panel Japonés')">Panel Japonés</div>
+<div class="category-btn submenu-btn" onclick="goNav('category','Sheer','Sheer Elegance')">Sheer Elegance</div>
+<div class="category-btn submenu-btn" onclick="goNav('category','Blackout','Blackout')">Blackout</div>
+<div class="category-btn submenu-btn" onclick="goNav('category','Verticales','Verticales')">Verticales</div>
 </div>
 
 <div id="category-view" class="page">
-<button class="btn-back" onclick="goNav('home')">← VOLVER</button>
-<h2 id="view-title" style="text-align:center;color:var(--primary-lila);"></h2>
+<button class="btn-back" onclick="history.back()">← VOLVER</button>
+<h2 id="view-title" style="text-align:center;color:var(--brand-color);"></h2>
 <div id="product-container" class="product-grid"></div>
 </div>
 
 </div>
 
 <div id="media-viewer">
-<div class="close-viewer" onclick="closeViewer()">×</div>
+<div class="close-viewer" onclick="history.back()">×</div>
 <div class="viewer-body">
 <div id="touch-overlay"></div>
 <img id="full-image">
 <iframe id="video-iframe" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
 <div class="viewer-footer">
-<div id="viewer-info"></div>
+<div id="viewer-info" style="font-weight:bold;"></div>
 <div class="dots-container" id="dots-box"></div>
 </div>
 </div>
@@ -268,15 +291,46 @@ const telefono="573108814049";
 
 const imagenes={
 PanelJapones:[
+"https://i.postimg.cc/pTd78T4L/Panel_japones_01.png",
+"https://i.postimg.cc/7L9df7BR/Panel_japones_02.png",
 "https://i.postimg.cc/65LM779r/01.png",
 "https://i.postimg.cc/4NbWKKJQ/02.png",
 "https://i.postimg.cc/Dwby2pNx/Panel-Japones.png"
 ],
-Sheer:["https://i.postimg.cc/jdQMWWsD/01.png"],
-Blackout:["https://i.postimg.cc/HsCSs0Cw/02.png"],
-Verticales:["https://i.postimg.cc/T1PP14tT/01.png"],
-Muebles:["https://i.postimg.cc/fbdTvQ5Q/closet-4696557.jpg"],
-Mobiliario:["https://i.postimg.cc/ncnsjPpL/467725657.png"],
+Sheer:[
+"https://i.postimg.cc/T1nmKjCR/Sheer_Black_Out_Guadalajara.png",
+"https://i.postimg.cc/sgjS2hSz/sheer3.png",
+"https://i.postimg.cc/nVqQYkGZ/cortinas_sheer_elegance_01.png",
+"https://i.postimg.cc/jdQMWWsD/01.png",
+"https://i.postimg.cc/4NbWKKJK/02.png" 
+],
+Blackout:[
+"https://i.postimg.cc/Vk8Fh9v7/03.png",
+"https://i.postimg.cc/QC86vp0Q/black_ou_T_01.png",
+"https://i.postimg.cc/xTSsTGSG/01.png",
+"https://i.postimg.cc/4xzrRjps/Blackout_02.png",
+"https://i.postimg.cc/631PhKxL/Blackout_01.png",
+"https://i.postimg.cc/HsCSs0Cw/02.png"
+],
+Verticales:[
+"https://i.postimg.cc/k4s4nmvB/02.png",
+"https://i.postimg.cc/hjsjSB1X/03.png",
+"https://i.postimg.cc/qRwRkTxg/04.png",
+"https://i.postimg.cc/x8dd8460/05.png",
+"https://i.postimg.cc/T1PP14tT/01.png"
+],
+Muebles:[
+"https://i.postimg.cc/ncnsjPpL/467725657_957044326445382_448672.png",
+"https://i.postimg.cc/cHYKwqvv/467660813_955655989917549_666305.png",
+"https://i.postimg.cc/q7WhNBvf/467521857_955619833254498_528063.png",
+"https://i.postimg.cc/RZsnzLrZ/196338.png",
+"https://i.postimg.cc/Y9C7s4wg/FB_IMG_1732643210600.jpg",
+"https://i.postimg.cc/GtZ1tqTJ/467818417_955952446554570_730833.png",
+"https://i.postimg.cc/fbdTvQ5Q/closet-4696557.jpg"
+],
+Mobiliario:[
+"https://i.postimg.cc/ncnsjPpL/467725657.png"
+],
 Videos:[
 {id:"btJDKdDBmnE",title:"Dual System"},
 {id:"cOaMki5fR6E",title:"Motorizadas"},
@@ -290,7 +344,7 @@ Videos:[
 let currentList=[],currentIndex=0,isVideoMode=false,currentCatName="";
 
 function goNav(view,catId=null,catName=null){
-history.pushState({view,catId,catName},"");
+history.pushState({view,catId,catName}, document.title);
 render();
 }
 
@@ -321,6 +375,7 @@ iframe.src="";
 }
 else if(s.view==='viewer'){
 document.getElementById('category-view').classList.add('active');
+loadCategory(s.catId,s.catName);
 viewer.style.display='flex';
 updateViewer();
 }
@@ -328,12 +383,13 @@ updateViewer();
 
 function loadCategory(id,name){
 if(!id)return;
+const c=document.getElementById('product-container');
 document.getElementById('view-title').innerText=name;
 currentCatName=name;
-currentList=imagenes[id];
+currentList=imagenes[id] || [];
 isVideoMode=(id==="Videos");
-const c=document.getElementById('product-container');
 c.innerHTML="";
+
 currentList.forEach((item,i)=>{
 const img=isVideoMode?`https://img.youtube.com/vi/${item.id}/0.jpg`:item;
 const label=isVideoMode?item.title:`${name} 0${i+1}`;
@@ -341,9 +397,9 @@ c.innerHTML+=`
 <div class="product-card" onclick="openViewer(${i})">
 <div class="product-img">
 <img src="${img}">
-${isVideoMode?'<i class="fas fa-play play-icon"></i>':''}
+${isVideoMode?'<i class=\"fas fa-play play-icon\"></i>':''}
 </div>
-<div style="font-weight:bold;font-size:13px;">${label}</div>
+<div style="font-weight:bold;font-size:13px;margin:5px 0; color: #333;">${label}</div>
 <button class="btn-buy" onclick="event.stopPropagation();enviarWA('${label}')">Solicitar Info</button>
 </div>`;
 });
@@ -362,7 +418,7 @@ const info=document.getElementById('viewer-info');
 if(isVideoMode){
 img.style.display='none';
 vid.style.display='block';
-vid.src=`https://www.youtube.com/embed/${currentList[currentIndex].id}?autoplay=1&rel=0`;
+vid.src=`https://www.youtube.com/embed/${currentList[currentIndex].id}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;
 info.innerText=currentList[currentIndex].title;
 }else{
 vid.style.display='none';
@@ -373,12 +429,7 @@ info.innerText=`${currentCatName} 0${currentIndex+1}`;
 }
 
 document.getElementById('dots-box').innerHTML=
-currentList.map((_,i)=>`<div class="dot ${i===currentIndex?'active':''}"></div>`).join('');
-}
-
-function closeViewer(){
-document.getElementById('video-iframe').src="";
-goNav('category',history.state.catId,history.state.catName);
+currentList.map((_,i)=>`<div class=\"dot ${i===currentIndex?'active':''}\"></div>`).join('');
 }
 
 let tStart=0;
@@ -395,11 +446,11 @@ updateViewer();
 },{passive:true});
 
 function enviarWA(msg){
-location.href=`https://wa.me/${telefono}?text=${encodeURIComponent('Hola Johanna, solicito información de: '+msg)}`;
+window.open(`https://wa.me/${telefono}?text=${encodeURIComponent('Hola Johanna, solicito información de: '+msg)}`,'_blank');
 }
 
 window.onload=()=>{
-if(!history.state)history.replaceState({view:'home'},"");
+if(!history.state)history.replaceState({view:'home'}, document.title);
 render();
 };
 </script>
